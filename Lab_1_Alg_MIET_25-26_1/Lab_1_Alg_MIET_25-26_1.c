@@ -3,8 +3,6 @@
 
 int num_match_check(int* num_arr_new, int* N) {
 	int cur_num = 2, cur_check = 2, num_vol = 0;
-	free(num_arr_new);
-
 	while (cur_num <= *N) {
 		while (cur_check < cur_num) {
 			if (cur_num % cur_check == 0 && cur_num % cur_check != cur_num) { break; }
@@ -33,16 +31,16 @@ int main() {
 		num_arr_old = (int*)realloc(num_arr_old, sizeof(int) * num_arr_new_len);
 		while (cur_num_ind < num_arr_new_len) {
 			if (num_arr_new[cur_num_ind] == num_arr_old[cur_num_ind]) {
-				printf("\033[;31;m%d", num_arr_new[cur_num_ind]);
+				printf("%d  ", num_arr_new[cur_num_ind]);
 			}
 			else {
-				printf("\033[;38;m%d", num_arr_new[cur_num_ind]);
+				printf("%d  ", num_arr_new[cur_num_ind]);
 			}
 			cur_num_ind++;
 		}
 		if (num_arr_new_len > num_arr_old_len) {
-			while (cur_num_ind < num_arr_new[cur_num_ind]) {
-				printf("\033[;32;m%d", num_arr_new[cur_num_ind]);
+			while (cur_num_ind < num_arr_new_len) {
+				printf("%d  ", num_arr_new[cur_num_ind]);
 				num_arr_old[cur_num_ind] = num_arr_new[cur_num_ind];
 				cur_num_ind++;
 			}
