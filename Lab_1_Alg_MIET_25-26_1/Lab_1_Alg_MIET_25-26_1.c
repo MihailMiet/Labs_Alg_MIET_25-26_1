@@ -1,73 +1,61 @@
 ﻿#include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
-int num_match_check(int* num_arr_new, int* N) {
-	int cur_num = 2, cur_check = 2, num_vol = 0;
-	while (cur_num <= *N) {
-		while (cur_check < cur_num) {
-			if (cur_num % cur_check == 0 && cur_num != 2) { break; }
-			else { 
-				num_vol++;
-			}
-			cur_check++;
-		}
-		cur_check = 2;
-		cur_num++;
-	}
-	cur_num = 2; cur_check = 2;
-	num_arr_new = (int*)malloc(sizeof(int) * num_vol);
-	num_vol = 0;
-	while (cur_num <= *N) {
-		while (cur_check < cur_num) {
-			if (cur_num % cur_check == 0 && cur_num != 2) { break; }
-			else {
-				num_arr_new[num_vol] = cur_num;
-				num_vol++;
-			}
-			cur_check++;
-		}
-		cur_check = 2;
-		cur_num++;
-	}
-	return num_vol + 1;
+void find_primes(int N, int** num_arr, int* count) {
+    int cur_ind = *count;
+    int probe_num;
+    int found_count = 0;
+    for (int i = 2; found_count < N; i++) {
+        int is_prime = 1;
+        for (probe_num = 2; probe_num * probe_num <= i; probe_num++) {
+            if (i % probe_num == 0) {
+                is_prime = 0;
+                break;
+            }
+        }
+        if (is_prime) {
+            if (cur_ind < *count) {
+                printf("%d ", i);
+            }
+            else {
+                printf("%d ", i);
+                (*num_arr)[cur_ind++] = i;
+            }
+            found_count++;
+        }
+    }
+    *count = cur_ind;
 }
 
 int main() {
-	int N = 1, num_arr_old_len = 0, num_arr_new_len = 0, cur_num_ind = 0;
-	int* num_arr_old = (int*)malloc(sizeof(int)), * num_arr_new = NULL;
-	while(N){
-		N = 1;
-		printf("Enter the limit: ");
-		scanf_s("%d", &N);
-		printf("\n");
-		if (N == 0) { return 0; }
-		num_arr_new_len = num_match_check(num_arr_new, &N);
-		num_arr_old = (int*)realloc(num_arr_old, sizeof(int) * num_arr_new_len);
-		num_arr_new = (int*)realloc(num_arr_new, sizeof(int) * num_arr_new_len);
-		while (cur_num_ind < num_arr_new_len) {
-			if (num_arr_new[cur_num_ind] == num_arr_old[cur_num_ind]) {
-				printf("%d  ", num_arr_new[cur_num_ind]);
-			}
-			else {
-				printf("%d  ", num_arr_new[cur_num_ind]);
-			}
-			cur_num_ind++;
-		}
-		if (num_arr_new_len > num_arr_old_len) {
-			while (cur_num_ind < num_arr_new_len) {
-				printf("%d  ", num_arr_new[cur_num_ind]);
-				num_arr_old[cur_num_ind] = num_arr_new[cur_num_ind];
-				cur_num_ind++;
-			}
-			num_arr_old_len = num_arr_new_len;
-		}
-		cur_num_ind = 0;
-		printf("\n");
-		printf("Press any key to restart: ");
-		scanf_s("%d", &N);
-		printf("\n");
-	}
-	free(num_arr_old);
-	free(num_arr_new);
-	return 0;
+    int N = 0, * num_arr = NULL, count = 0, size = 10;
+    num_arr = (int*)malloc(size * sizeof(int));
+    if (!num_arr) {
+        perror("Memory allocation failed\n");
+        return 1;
+    }
+    printf("Enter the needed volume (0 to exit): ");
+    scanf_s("%d", &N);
+    printf("\n");
+    while (N) {
+        system("cls");
+        int start_time = clock();
+        if (count + N > size) {
+            size = (count + N) * 2;
+            num_arr = (int*)realloc(num_arr, size * sizeof(int));
+            if (!num_arr) {
+                perror("Memory allocation failed\n");
+                return 1;
+            }
+        }
+        find_primes(N, &num_arr, &count);
+        int elapsed_time = clock() - start_time;
+        printf("\n\nTime: %.10f s\n", (float)elapsed_time / CLOCKS_PER_SEC);
+        printf("\nEnter the needed volume (0 to exit): ");
+        scanf_s("%d", &N);
+        printf("\n");
+    }
+    free(num_arr);
+    return 0;
 }
