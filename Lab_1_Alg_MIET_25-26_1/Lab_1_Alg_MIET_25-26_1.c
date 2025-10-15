@@ -16,10 +16,10 @@ void find_primes(int N, int** num_arr, int* count) {
         }
         if (is_prime) {
             if (cur_ind < *count) {
-                printf("%d ", i);
+                printf("%d\n", (*num_arr)[cur_ind++]);
             }
             else {
-                printf("%d ", i);
+                printf("%d\n", i);
                 (*num_arr)[cur_ind++] = i;
             }
             found_count++;
