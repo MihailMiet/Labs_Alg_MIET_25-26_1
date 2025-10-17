@@ -3,30 +3,31 @@
 #include <time.h>
 
 void find_primes(int N, int** num_arr, int* count) {
-    int cur_ind = *count;
     int probe_num;
     int found_count = 0;
-    for (int i = 2; found_count < N; i++) {
-        if (cur_ind < *count) {
-            printf("%d\n", (*num_arr)[cur_ind++]);
-        }
-        else {
-            int is_prime = 1;
-            for (probe_num = 2; probe_num * probe_num <= i; probe_num++) {
-                if (i % probe_num == 0) {
-                    is_prime = 0;
-                    break;
-                }
+    
+    for (int i = 0; i < *count && found_count < N; i++) {
+        printf("x| %d\n", (*num_arr)[i]);
+        found_count++;
+    }
+    
+    int start = (*count > 0) ? (*num_arr)[*count - 1] + 1 : 2;
+    
+    for (int i = start; found_count < N; i++) {
+        int is_prime = 1;
+        for (probe_num = 2; probe_num * probe_num <= i; probe_num++) {
+            if (i % probe_num == 0) {
+                is_prime = 0;
+                break;
             }
         }
         if (is_prime) {
-           printf("%d\n", i);
-           (*num_arr)[cur_ind++] = i;
+           printf(" | %d\n", i);
+           (*num_arr)[*count] = i;
+           (*count)++;
            found_count++;
         }
-        i++;
     }
-    *count = cur_ind;
 }
 
 int main() {
@@ -37,24 +38,26 @@ int main() {
         return 1;
     }
     printf("Enter the needed volume (0 to exit): ");
-    scanf_s("%d", &N);
+    scanf("%d", &N);
     printf("\n");
     while (N) {
-        system("cls");
+        system("clear");
         int start_time = clock();
         if (N > size) {
             size = (N) * 2;
-            num_arr = (int*)realloc(num_arr, size * sizeof(int));
-            if (!num_arr) {
+            int* temp = (int*)realloc(num_arr, size * sizeof(int));
+            if (!temp) {
                 perror("Memory allocation failed\n");
+                free(num_arr);
                 return 1;
             }
+            num_arr = temp;
         }
         find_primes(N, &num_arr, &count);
         int elapsed_time = clock() - start_time;
         printf("\n\nTime: %.10f s\n", (float)elapsed_time / CLOCKS_PER_SEC);
         printf("\nEnter the needed volume (0 to exit): ");
-        scanf_s("%d", &N);
+        scanf("%d", &N);
         printf("\n");
     }
     free(num_arr);
