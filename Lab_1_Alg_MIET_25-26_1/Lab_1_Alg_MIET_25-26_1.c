@@ -3,27 +3,26 @@
 #include <time.h>
 
 void find_primes(int N, int** num_arr, int* count) {
-    int cur_ind = *count, i, probe_num, found_count = *count, max_counter = 0;
-    if (*count == 0) { i = 2; }
-    else { i = (*num_arr)[-1]; }
-    while (found_count < N) {
-        if (*count == 0) { probe_num = 2; }
-        int is_prime = 1;
-        for (probe_num = (*num_arr)[-1]; probe_num * probe_num <= i; probe_num++) {
-            if (i % probe_num == 0) {
-                is_prime = 0;
-                break;
+    int cur_ind = *count;
+    int probe_num;
+    int found_count = 0;
+    for (int i = 2; found_count < N; i++) {
+        if (cur_ind < *count) {
+            printf("%d\n", (*num_arr)[cur_ind++]);
+        }
+        else {
+            int is_prime = 1;
+            for (probe_num = 2; probe_num * probe_num <= i; probe_num++) {
+                if (i % probe_num == 0) {
+                    is_prime = 0;
+                    break;
+                }
             }
         }
         if (is_prime) {
-            if (max_counter < *count) {
-                printf("x| %d\n", (*num_arr)[max_counter++]);
-            }
-            else {
-                printf(" | %d\n", i);
-                (*num_arr)[cur_ind++] = i;
-            }
-            found_count++;
+           printf("%d\n", i);
+           (*num_arr)[cur_ind++] = i;
+           found_count++;
         }
         i++;
     }
