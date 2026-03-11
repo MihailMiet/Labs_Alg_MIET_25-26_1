@@ -38,10 +38,10 @@ int main() {
         return 1;
     }
     printf("Enter the needed volume (0 to exit): ");
-    scanf("%d", &N);//UI
+    scanf_s("%d", &N);//UI
     printf("\n");
     while (N) {//Main loop (clc,time,memory)
-        system("clear");
+        system("cls");
         int start_time = clock();
         if (N > size) {//Realloc if num_arr capacity is not enough. Create the larger "temp", assign it to num_arr
             size = (N) * 2;
@@ -57,7 +57,7 @@ int main() {
         int elapsed_time = clock() - start_time;
         printf("\n\nTime: %.10f s\n", (float)elapsed_time / CLOCKS_PER_SEC);//Output
         printf("\nEnter the needed volume (0 to exit): ");
-        scanf("%d", &N);
+        scanf_s("%d", &N);
         printf("\n");
     }
     free(num_arr);
